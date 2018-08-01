@@ -28,17 +28,17 @@ module.exports = function (app) {
 
       const symbol = req.query.stock;
       const like = req.query.like;
-      const ip = req.header("x-forwarded-for").split(",")[0];
-      console.log(ip)
+    
+      let ip = req.header("x-forwarded-for");
+    
+      if (ip == undefined) ip = "123.123.123.123";
+      else ip = ip.split(",")[0];
     
       let url;
       let symbol1;
       let symbol2;
       let multiple = false;
       let stockResponse;
-    
-      //console.log("query: ", req.query);
-      //console.log("IP: ", ip);
     
       if (Array.isArray(symbol)  === true) {
         url = "https://api.iextrading.com/1.0/stock/market/batch?symbols=" + symbol[0] + "," + symbol[1] + "&types=quote";
