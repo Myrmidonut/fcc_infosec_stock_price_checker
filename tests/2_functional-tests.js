@@ -23,6 +23,7 @@ suite('Functional Tests', function() {
           .query({stock: "goog"})
           .end(function(err, res) {
             if (err) console.log(err)
+          
             assert.equal(res.status, 200);
 
             assert.property(res.body.stockData, "price");
