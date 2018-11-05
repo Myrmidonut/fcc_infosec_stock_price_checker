@@ -1,0 +1,20 @@
+#testui {
+  margin-left: 5%;
+}
+
+h2 {
+  text-align: left;
+}
+    
+hr {
+  margin: 50px;
+}
+
+#userstories {
+  margin-left: 5%;
+  margin-top: 5%;
+}
+
+input[type="text"] {
+  width: 100px;
+}
