@@ -1511,7 +1511,7 @@ packages:
     resolution:
       integrity: sha512-b634oIFJ2SFHnWEdntljrBeEroF1piyTiPmZPqsZwwy2KC5MLazq97eHPw1Qz77VPujQTEnbhOUvMssjpak2WQ==
 registry: 'https://registry.npmjs.org/'
-shrinkwrapMinorVersion: 8
+shrinkwrapMinorVersion: 9
 shrinkwrapVersion: 3
 specifiers:
   body-parser: ^1.15.2
