@@ -23,6 +23,7 @@ module.exports = function (app) {
       else ip = ip.split(",")[0];
     
       if (Array.isArray(symbol) === true) {
+        console.log("two stocks")
         url = `https://api.iextrading.com/1.0/stock/market/batch?symbols=${symbol[0]},${symbol[1]}&types=quote`;
         symbol1 = symbol[0];
         symbol2 = symbol[1];
@@ -117,7 +118,11 @@ module.exports = function (app) {
                     } else {
                       console.log("found 2");
 
-                      stockResponse.stockData[1].rel_likes = result[0].likes;
+                      stockResponse.stockData[1].rel_likes = result[0].likes - stockResponse.stockData[0].rel_likes;
+                      stockResponse.stockData[0].rel_likes = stockResponse.stockData[0].rel_likes - result[0].likes;
+                      
+                      
+                      console.log(stockResponse)
                       res.json(stockResponse);
                     }
                   })
