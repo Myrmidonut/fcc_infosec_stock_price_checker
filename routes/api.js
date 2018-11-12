@@ -76,10 +76,10 @@ module.exports = function (app) {
                     stockResponse.stockData.likes = result[0].likes;
                     res.json(stockResponse);
                   } else {
-                    collection.findOneAndUpdate({symbol: symbol}, {$inc: {likes: 1}, $push: {ip: ip}}, {new: true}, (err, result) => {
+                    collection.findOneAndUpdate({symbol: symbol}, {$inc: {likes: 1}, $push: {ip: ip}}, {returnOriginal: false}, (err, result) => {
                       console.log("updated with 1 like");
                       
-                      stockResponse.stockData.likes = result.value.likes + 1; // new:true not returning updated
+                      stockResponse.stockData.likes = result.value.likes;
                       res.json(stockResponse);
                     })
                   }
@@ -151,7 +151,7 @@ module.exports = function (app) {
 
                       stockResponse.stockData[0].rel_likes = result[0].likes;
                     } else {
-                      collection.findOneAndUpdate({symbol: symbol1}, {$inc: {likes: 1}, $push: {ip: ip}}, {new: true}, (err, result) => {
+                      collection.findOneAndUpdate({symbol: symbol1}, {$inc: {likes: 1}, $push: {ip: ip}}, {returnOriginal: false}, (err, result) => {
                         console.log("updated 1 with 1 like");
 
                         stockResponse.stockData[0].rel_likes = result.value.likes;
@@ -183,10 +183,10 @@ module.exports = function (app) {
                         res.json(stockResponse);
 
                       } else {
-                        collection.findOneAndUpdate({symbol: symbol2}, {$inc: {likes: 1}, $push: {ip: ip}}, {new: true}, (err, result) => {
+                        collection.findOneAndUpdate({symbol: symbol2}, {$inc: {likes: 1}, $push: {ip: ip}}, {returnOriginal: false}, (err, result) => {
                           console.log("updated 2 with 1 like");
                           
-                          stockResponse.stockData[1].rel_likes = result.value.likes + 1 - stockResponse.stockData[0].rel_likes;  // new:true not returning updated
+                          stockResponse.stockData[1].rel_likes = result.value.likes - stockResponse.stockData[0].rel_likes;
                           stockResponse.stockData[0].rel_likes = stockResponse.stockData[0].rel_likes - stockResponse.stockData[1].rel_likes;
                           
                           res.json(stockResponse);
