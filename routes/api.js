@@ -78,19 +78,17 @@ module.exports = function (app) {
                   } else {
                     collection.findOneAndUpdate({symbol: symbol}, {$inc: {likes: 1}, $push: {ip: ip}}, {new: true}, (err, result) => {
                       console.log("updated with 1 like");
-
-                      stockResponse.stockData.likes = result.value.likes;
+                      
+                      stockResponse.stockData.likes = result.value.likes + 1; // new:true not returning updated
                       res.json(stockResponse);
                     })
                   }
                 }
               })
+            
               
-            } else {
-              console.log("not liked");
-              
-              if (multiple === true) {
-                console.log("multiple")
+            } else if (like === "false" && multiple === true) {
+                console.log("not liked, multiple")
                 
                 collection.find({symbol: symbol1}).toArray((err, result) => {
                   if (result.length === 0) {
@@ -106,6 +104,7 @@ module.exports = function (app) {
                     
                     stockResponse.stockData[0].rel_likes = result[0].likes;
                   }
+                  
                   collection.find({symbol: symbol2}).toArray((err, result) => {
                     if (result.length === 0) {
                       console.log("not found 2");
@@ -113,7 +112,12 @@ module.exports = function (app) {
                       collection.insert({symbol: symbol2, likes: 0, ip: []}, (err, result) => {
                         console.log("created 2 with 0 likes");
                         
-                        stockResponse.stockData[1].rel_likes = result.ops[0].likes;
+                        console.log("result: ", result.ops[0].likes)
+                        
+                        stockResponse.stockData[1].rel_likes = result.ops[0].likes - stockResponse.stockData[0].rel_likes;
+                        stockResponse.stockData[0].rel_likes = stockResponse.stockData[0].rel_likes - result.ops[0].likes;
+                        
+                        res.json(stockResponse);
                       })
                     } else {
                       console.log("found 2");
@@ -121,15 +125,80 @@ module.exports = function (app) {
                       stockResponse.stockData[1].rel_likes = result[0].likes - stockResponse.stockData[0].rel_likes;
                       stockResponse.stockData[0].rel_likes = stockResponse.stockData[0].rel_likes - result[0].likes;
                       
-                      
-                      console.log(stockResponse)
                       res.json(stockResponse);
                     }
                   })
                 })
+              
+
+              } else if (like === "true" && multiple === true) {
+                console.log("liked, multiple");
+                
+                collection.find({symbol: symbol1}).toArray((err, result) => {
+                  if (result.length === 0) {
+                    console.log("not found 1");
+                    
+                    collection.insert({symbol: symbol1, likes: 1, ip: [ip]}, (err, result) => {
+                      console.log("created 1 with 1 like");
+                      
+                      stockResponse.stockData[0].rel_likes = result.ops[0].likes;
+                    })
+                  } else {
+                    console.log("found 1");
+                    
+                    if (result[0].ip.indexOf(ip) != -1) {
+                      console.log("ip has already liked");
+
+                      stockResponse.stockData[0].rel_likes = result[0].likes;
+                    } else {
+                      collection.findOneAndUpdate({symbol: symbol1}, {$inc: {likes: 1}, $push: {ip: ip}}, {new: true}, (err, result) => {
+                        console.log("updated 1 with 1 like");
+
+                        stockResponse.stockData[0].rel_likes = result.value.likes;
+                      })
+                    }
+                  }
+                  
+                  collection.find({symbol: symbol2}).toArray((err, result) => {
+                    if (result.length === 0) {
+                      console.log("not found 2");
+                      
+                      collection.insert({symbol: symbol2, likes: 1, ip: [ip]}, (err, result) => {
+                        console.log("created 2 with 1 like");
+                        
+                        stockResponse.stockData[1].rel_likes = result.ops[0].likes - stockResponse.stockData[0].rel_likes;
+                        stockResponse.stockData[0].rel_likes = stockResponse.stockData[0].rel_likes - result.ops[0].likes;
+                        
+                        res.json(stockResponse);
+                      })
+                    } else {
+                      console.log("found 2");
+                      
+                      if (result[0].ip.indexOf(ip) != -1) {
+                        console.log("ip has already liked");
+                        
+                        stockResponse.stockData[1].rel_likes = result[0].likes - stockResponse.stockData[0].rel_likes;
+                        stockResponse.stockData[0].rel_likes = stockResponse.stockData[0].rel_likes - result[0].likes;
+                        
+                        res.json(stockResponse);
+
+                      } else {
+                        collection.findOneAndUpdate({symbol: symbol2}, {$inc: {likes: 1}, $push: {ip: ip}}, {new: true}, (err, result) => {
+                          console.log("updated 2 with 1 like");
+                          
+                          stockResponse.stockData[1].rel_likes = result.value.likes + 1 - stockResponse.stockData[0].rel_likes;  // new:true not returning updated
+                          stockResponse.stockData[0].rel_likes = stockResponse.stockData[0].rel_likes - stockResponse.stockData[1].rel_likes;
+                          
+                          res.json(stockResponse);
+                        })
+                      }
+                    }
+                  })
+                })
+                
                 
               } else {
-                console.log("single");
+                console.log("not liked, single");
                 
                 collection.find({symbol: symbol}).toArray((err, result) => {
                   if (result.length === 0) {
@@ -149,9 +218,11 @@ module.exports = function (app) {
                   }
                 })
               }
-            }
-          });
+            });
         })
-        .catch(error => console.log("Error: ", error))
+        .catch(error => {
+          console.log("Error: ", error);
+          res.json("Stock not found");
+        })
     });
 };

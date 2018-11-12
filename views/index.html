@@ -1,27 +1,25 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Welcome to HyperDev!</title>
+    <title>Nasdaq Stock Price Checker</title>
     
-    <meta name="description" content="A cool thing made with HyperDev">
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="shortcut icon" href="https://glitch.com/edit/favicon.ico?v=3">
-    <link rel="stylesheet" href="./public/style.css">
+    <link rel="shortcut icon" href="https://cdn.hyperdev.com/us-east-1%3A52a203ff-088b-420f-81be-45bf559d01b1%2Ffavicon.ico" type="image/x-icon"/>
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link href="style.css" rel="stylesheet">
   </head>
   
   <body>
-    <header>
-      <h1>
-        ISQA_5 - Nasdaq Stock Price Checker
-      </h1>
+    
+    <header class="container">
+      <h1>Information Security Project: Nasdaq Stock Price Checker</h1>
     </header>
     
-    <div id="userstories">
-      <h3>User Stories</h3>
-      <ol>
+    <main class="container">
+      <h2>User Stories</h2>
+      <ol class="user-stories">
         <li>Set the content security policies to only allow loading of scripts and css from your server.</li>
         <li>I can <b>GET</b> <code>/api/stock-prices</code> with form data containing a Nasdaq <i>stock</i> ticker and recieve back an object <i>stockData</i>.</li>
         <li>In <i>stockData</i>, I can see the <i>stock</i>(string, the ticker), <i>price</i>(decimal in string format), and <i>likes</i>(int).</li>
@@ -32,79 +30,54 @@
       </ol>
       
       <h3>Example usage:</h3>
-      <code>/api/stock-prices?stock=goog</code><br>
-      <code>/api/stock-prices?stock=goog&amp;like=true</code><br>
-      <code>/api/stock-prices?stock=goog&amp;stock=msft</code><br>
-      <code>/api/stock-prices?stock=goog&amp;stock=msft&amp;like=true</code><br>
+      <code>GET /api/stock-prices?stock=goog</code><br>
+      <code>GET /api/stock-prices?stock=goog&amp;like=true</code><br>
+      <code>GET /api/stock-prices?stock=goog&amp;stock=msft</code><br>
+      <code>GET /api/stock-prices?stock=goog&amp;stock=msft&amp;like=true</code><br>
       
       <h3>Example return:</h3>
       <code>{"stockData":{"stock":"GOOG","price":"786.90","likes":1}}</code><br>
       <code>{"stockData":[{"stock":"MSFT","price":"62.30","rel_likes":-1},{"stock":"GOOG","price":"786.90","rel_likes":1}]}</code>
-    </div>
-    
-    <hr>
-    
-    <div id="testui">
-      <h2>Front-End:</h2>
-      <h3>Get single price and total likes</h3>
       
-      <form id="testForm2" class="border" action="/api/stock-prices" method="get">
-        <input type="text" name="stock" placeholder="goog" required="">
-        <input type="checkbox" name="like" value=true> Like?<br>
-        <button type="submit">Get Price!</button>
+      <hr>
+      
+      <h2>API:</h2>
+      
+      <form id="singleStock" class="border" action="/api/stock-prices" method="get">
+        <h3>Get single price and total likes:</h3>
+        <p><code>GET /api/stock-prices</code></p>
+        <input type="text" name="stock" placeholder="goog" required="" id="singleInput">
+        <input type="checkbox" name="like" value="true" id="singleLike">Like<br>
+        <input type="submit" value="Get Stock">
+        <p><strong>Result:</strong> <span id="singleResult"></span></p>
       </form>
       
-      <h3>Compare and get relative likes</h3>
-      
-      <form id="testForm" class="border" action="/api/stock-prices" method="get">
-        <input type="text" name="stock" placeholder="goog" required="">
-        <input type="text" name="stock" placeholder="msft" required="">
-        <input type="checkbox" name="like" value=true> Like both?<br>
-        <button type="submit">Get Price!</button>
+      <form id="multiStock" class="border" action="/api/stock-prices" method="get">
+        <h3>Compare and get relative likes:</h3>
+        <p><code>GET /api/stock-prices</code></p>
+        <input type="text" name="stock" placeholder="goog" required="" id="multiInputFirst">
+        <input type="text" name="stock" placeholder="msft" required="" id="multiInputSecond">
+        <input type="checkbox" name="like" value="true" id="multiLike">Like both<br>
+        <input type="submit" value="Get Stocks">
+        <p><strong>Result:</strong> <span id="multiResult1"></span></p>
+        <p><strong>Result:</strong> <span id="multiResult2"></span></p>
       </form>
       
-      <code id="jsonResult"></code>
-    </div>
+      <p>
+        <h3>Result:</h3>
+        <code id="jsonResult"></code>
+      </p>
+      
+    </main>
     
-    <hr>
+    <footer class="container">
+      <hr>
+      <p>
+        by <a href="https://github.com/Myrmidonut/fcc_api_timestamp" title="GitHub Repository" target="_blank">Frederik</a> | <a href="https://learn.freecodecamp.org/" title="Learn to code at freeCodeCamp" target="_blank">freeCodeCamp</a>
+      </p>
+    </footer>
     
-    <!-- Your web-app is https, so your scripts need to be too -->
-    
-    <!--
-    <script src="https://code.jquery.com/jquery-2.2.1.min.js"
-            integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="
-            crossorigin="anonymous"></script>
-    <script>
-      $(function() {
-        $('#testForm').submit(function(e) {
-          console.log("form func")
-          $.ajax({
-            url: '/api/stock-prices',
-            type: 'get',
-            data: $('#testForm').serialize(),
-            success: function(data) {
-              console.log("form test")
-              $('#jsonResult').text(JSON.stringify(data));
-            }
-          });
-          e.preventDefault();
-        });
-        $('#testForm2').submit(function(e) {
-          console.log("form func")
-          $.ajax({
-            url: '/api/stock-prices',
-            type: 'get',
-            data: $('#testForm2').serialize(),
-            success: function(data) {
-              console.log("form test")
-              $('#jsonResult').text(JSON.stringify(data));
-            }
-          });
-          e.preventDefault();
-        });
-      });
-   </script>
-  -->
+    <script src="script.js"></script>
     
   </body>
 </html>

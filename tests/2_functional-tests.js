@@ -66,7 +66,7 @@ suite('Functional Tests', () => {
       chai
         .request(server)
         .get("/api/stock-prices")
-        .query({stock: ["goog", "msft"] })
+        .query({stock: ["goog", "msft"], like: false })
         .end((err, res) => {
           assert.equal(res.status, 200);
           assert.equal(res.body.stockData[0].stock, "GOOG");
