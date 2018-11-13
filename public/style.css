@@ -18,6 +18,10 @@ h3 {
   margin-top: 30px;
 }
 
+h1 {
+  line-height: initial;
+}
+
 .user-stories {
   position: relative;
   text-align: left;
