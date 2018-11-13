@@ -6,8 +6,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <link rel="shortcut icon" href="https://cdn.hyperdev.com/us-east-1%3A52a203ff-088b-420f-81be-45bf559d01b1%2Ffavicon.ico" type="image/x-icon"/>
-    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+    <link rel="shortcut icon" href="https://cdn.hyperdev.com/us-east-1%3A52a203ff-088b-420f-81be-45bf559d01b1%2Ffavicon.ico" type="image/x-icon">
+    <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
     <link href="style.css" rel="stylesheet">
   </head>
   
@@ -21,11 +21,11 @@
       <h2>User Stories</h2>
       <ol class="user-stories">
         <li>Set the content security policies to only allow loading of scripts and css from your server.</li>
-        <li>I can <b>GET</b> <code>/api/stock-prices</code> with form data containing a Nasdaq <i>stock</i> ticker and recieve back an object <i>stockData</i>.</li>
-        <li>In <i>stockData</i>, I can see the <i>stock</i>(string, the ticker), <i>price</i>(decimal in string format), and <i>likes</i>(int).</li>
-        <li>I can also pass along field <i>like</i> as <b>true</b>(boolean) to have my like added to the stock(s). Only 1 like per ip should be accepted.</li>
-        <li>If I pass along 2 stocks, the return object will be an array with both stock's info but instead of <i>likes</i>, it will display <i>rel_likes</i>(the difference between the likes on both) on both.</li>
-        <li>A good way to receive current price is the following external API(replacing 'GOOG' with your stock): <code>https://finance.google.com/finance/info?q=NASDAQ%3aGOOG</code></li>
+        <li>I can <strong>GET</strong> <code>/api/stock-prices</code> with form data containing a Nasdaq <code>stock</code> ticker and recieve back an object <code>stockData</code>.</li>
+        <li>In <code>stockData</code>, I can see the <code>stock</code> (string, the ticker), <code>price</code> (decimal in string format), and <code>likes</code> (integer).</li>
+        <li>I can also pass along field <code>like</code> as <code>true</code> (boolean) to have my like added to the stock. Only 1 like per <code>ip</code> should be accepted.</li>
+        <li>If I pass along <code>2 stocks</code>, the return object will be an <code>array</code> with both stock's info but instead of likes, it will display <code>rel_likes</code> (the difference between the likes on both) on both.</li>
+        <li>A good way to receive current price is the following external API: <code>https://api.iextrading.com</code></li>
         <li>All 5 functional tests are complete and passing.</li>
       </ol>
       
@@ -36,8 +36,8 @@
       <code>GET /api/stock-prices?stock=goog&amp;stock=msft&amp;like=true</code><br>
       
       <h3>Example return:</h3>
-      <code>{"stockData":{"stock":"GOOG","price":"786.90","likes":1}}</code><br>
-      <code>{"stockData":[{"stock":"MSFT","price":"62.30","rel_likes":-1},{"stock":"GOOG","price":"786.90","rel_likes":1}]}</code>
+      <code>{"stockData": {"stock":"GOOG", "price":"786.90", "likes":1}}</code><br>
+      <code>{"stockData": [{"stock":"MSFT", "price":"62.30", "rel_likes":-1}, {"stock":"GOOG", "price":"786.90", "rel_likes":1}]}</code>
       
       <hr>
       
@@ -73,7 +73,7 @@
     <footer class="container">
       <hr>
       <p>
-        by <a href="https://github.com/Myrmidonut/fcc_api_timestamp" title="GitHub Repository" target="_blank">Frederik</a> | <a href="https://learn.freecodecamp.org/" title="Learn to code at freeCodeCamp" target="_blank">freeCodeCamp</a>
+        by <a href="https://github.com/Myrmidonut/fcc_infosec_stock_price_checker" title="GitHub Repository" target="_blank">Frederik</a> | <a href="https://learn.freecodecamp.org/" title="Learn to code at freeCodeCamp" target="_blank">freeCodeCamp</a>
       </p>
     </footer>
     
