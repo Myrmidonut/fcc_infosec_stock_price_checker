@@ -37,6 +37,7 @@ code {
   font-family: monospace;
   color: black;
   background-color: rgba(0,0,0,0.1);
+  word-wrap: break-word;
 }
 
 a {
@@ -45,6 +46,7 @@ a {
 
 ol {
 	list-style-position: inside;
+  padding-left: 0;
 }
 
 ul {
@@ -93,4 +95,8 @@ input[type=submit] {
 
 input[type=submit]:hover {
   background-color: #FFFEC4;
+}
+
+#resultBlock {
+  height: 100px;
 }
