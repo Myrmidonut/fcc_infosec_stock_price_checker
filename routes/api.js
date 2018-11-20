@@ -7,7 +7,6 @@ const fetch       = require("node-fetch");
 const MONGODB_CONNECTION_STRING = process.env.DB;
 
 module.exports = function (app) {
-
   app.route('/api/stock-prices')
     .get((req, res) => {
       const symbol = req.query.stock;
